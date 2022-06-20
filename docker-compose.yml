@@ -1,0 +1,28 @@
+services:
+  nexus:
+    container_name: nexus-repo
+    image: sonatype/nexus3
+    #build:
+    #  context: .
+    #  dockerfile: dockerfile-nexus
+    volumes:
+      - "./nexus:/nexus-data"
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: curl --fail http://localhost:8081 || exit 1
+      interval: 20s
+      retries: 5
+      start_period: 20s
+      timeout: 5s
+
+  nexus_config:
+    container_name: nexus-repo-config
+    build:
+      context: .
+      dockerfile: dockerfile-nexus-config
+    volumes:
+      - "./nexus:/home/ubuntu"
+    depends_on:
+      nexus:
+        condition: service_healthy

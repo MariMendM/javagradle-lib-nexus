@@ -1,0 +1,9 @@
+#FROM groovy
+#WORKDIR /home/groovy
+#ADD ./nexus/custom-config/waitStart.sh .
+#CMD ./waitStart.sh
+
+FROM ubuntu
+RUN apt-get update && apt-get install -y groovy && apt-get install -y curl
+WORKDIR /home/ubuntu
+CMD /home/ubuntu/custom-config/waitStart.sh
